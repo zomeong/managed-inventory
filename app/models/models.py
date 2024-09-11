@@ -50,6 +50,3 @@ class Transaction(Base):
     quantity = Column(Integer, nullable=False)
     date = Column(DateTime, nullable=False)
     manager_name = Column(String, nullable=True)
-
-    # 관계 설정
-    product = relationship("Product", back_populates="stock_items")
