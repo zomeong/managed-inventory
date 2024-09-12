@@ -2,3 +2,4 @@ venv
 db_data
 dbconf
 __pycache__
+.env
