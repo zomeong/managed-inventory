@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, BigI
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from enum import Enum as PyEnum
+from app.database import Base
 
-Base = declarative_base()
 
 
 class Product(Base):
