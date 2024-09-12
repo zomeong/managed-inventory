@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: 'markcloud-managed-inventory-api:latest'
+    container_name: 'markcloud-managed-inventory'
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/app
+    ports:
+      - '${API_PORT}:8002'
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:latest
+    container_name: 'markcloud-managed-inventory-db'
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./dbconf/conf.d:/etc/mysql/conf.d
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    env_file:
+      - .env
+    ports:
+      - '${DB_PORT}:3306'
