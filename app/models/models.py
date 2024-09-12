@@ -14,6 +14,7 @@ class Product(Base):
     
     _id = Column(BigInteger, primary_key=True, index=True)
     name = Column(String, nullable=False)
+    code = Column(String, nullable=False)
     
     # 관계 설정
     stock_items = relationship("Stock", back_populates="product")
@@ -32,8 +33,8 @@ class Stock(Base):
     __tablename__ = "stock"
     
     _id = Column(BigInteger, primary_key=True, index=True)
-    product_id = Column(BigInteger, ForeignKey("products.id"), nullable=False)
-    container_id = Column(BigInteger, ForeignKey("containers.id"), nullable=False)
+    product_id = Column(BigInteger, ForeignKey("products._id"), nullable=False)
+    container_id = Column(BigInteger, ForeignKey("containers._id"), nullable=False)
     quantity = Column(Integer, nullable=False)
     
     # 관계 설정
@@ -45,8 +46,8 @@ class Transaction(Base):
     
     _id = Column(BigInteger, primary_key=True, index=True)
     _type = Column(Enum(TransactionType), nullable=False)
-    product_id = Column(BigInteger, nullable=False)
-    container_id = Column(BigInteger, nullable=False)
+    product_code = Column(String, nullable=False)
+    container_name = Column(String, nullable=False)
     quantity = Column(Integer, nullable=False)
     date = Column(DateTime, nullable=False)
     manager_name = Column(String, nullable=True)
