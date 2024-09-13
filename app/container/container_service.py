@@ -12,18 +12,18 @@ class ContainerService:
         self.repository.create(createReq)
 
     def get_container(self, id: int):
-        container = self.find_container_by_id(id)
+        container = self.find_container(id)
         return container
 
     def get_all_containers(self):
         return self.repository.get_all()
     
     def update_container(self, id:int, updateReq: ContainerCreate):
-        container = self.find_container_by_id(id)
+        container = self.find_container(id)
         self.check_name(updateReq.name)
         self.repository.update(container, updateReq)
 
-    def find_container_by_id(self, id):
+    def find_container(self, id):
         container = self.repository.find_by_id(id)
         if container is None:
             raise ValueError("컨테이너를 찾을 수 없습니다")
