@@ -23,3 +23,9 @@ def get_container(container_id: str, service: ContainerService = Depends(get_con
 @router.get("", response_model=list[ContainerResponse])
 def get_all_container(service: ContainerService = Depends(get_container_service)):
     return service.get_all_containers()
+
+@router.post("/{container_id}/update")
+def update_container(container_id: str, container: ContainerCreate,
+                    service: ContainerService = Depends(get_container_service)):
+    service.update_container(container_id, container)
+    return "컨테이너 정보 수정이 완료되었습니다."

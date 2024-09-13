@@ -11,6 +11,12 @@ class ContainerRepository:
         self.db.commit()
         self.db.refresh(container)
 
+    def update(self, container, updateReq):
+        container.name = updateReq.name
+        container.location = updateReq.location
+        self.db.commit()
+        self.db.refresh(container)
+
     def get_all(self):
         return self.db.query(Container).all()
 
