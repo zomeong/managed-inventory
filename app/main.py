@@ -3,6 +3,7 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from app.core.database import Base, engine
 from app.models import models
+from app.container import container_router
 
 def get_server():
     server = FastAPI(
@@ -32,4 +33,4 @@ Base.metadata.create_all(bind=engine)
 def ping():
     return 200
 
-# app.include_router(user_router.router, tags=['User'])
+app.include_router(container_router.router, tags=['Container'])
