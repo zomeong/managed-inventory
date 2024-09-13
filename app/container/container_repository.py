@@ -11,6 +11,11 @@ class ContainerRepository:
         self.db.commit()
         self.db.refresh(container)
 
+    def get_all(self):
+        return self.db.query(Container).all()
+
     def find_by_name(self, name: str):
-        container = self.db.query(Container).filter(Container.name == name).first
-        return container
+        return self.db.query(Container).filter(Container.name == name).first()
+    
+    def find_by_id(self, id: int):
+        return self.db.query(Container).filter(Container._id == id).first()
