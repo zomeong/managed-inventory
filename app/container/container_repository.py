@@ -6,15 +6,16 @@ class ContainerRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, createReq):
-        container = Container(**createReq.dict())
+    def create(self, request):
+        container = Container(**request.dict())
         self.db.add(container)
         self.db.commit()
         self.db.refresh(container)
 
-    def update(self, container, updateReq):
-        container.name = updateReq.name
-        container.location = updateReq.location
+    def update(self, container, request):
+        for key, value in request.dict().items():
+            if value is not None:
+                setattr(container, key, value)
         self.db.commit()
         self.db.refresh(container)
 

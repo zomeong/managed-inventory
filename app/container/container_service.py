@@ -1,5 +1,5 @@
 from app.container.container_repository import ContainerRepository
-from app.container.container_schema import ContainerCreate
+from app.container.container_schema import ContainerCreate, ContainerUpdate
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
@@ -7,9 +7,9 @@ class ContainerService:
     def __init__(self, db: Session):
         self.repository = ContainerRepository(db)
 
-    def create_container(self, createReq: ContainerCreate):
-        self.check_name(createReq.name)
-        self.repository.create(createReq)
+    def create_container(self, request: ContainerCreate):
+        self.check_name(request.name)
+        self.repository.create(request)
 
     def get_container(self, id: int):
         container = self.find_container(id)
@@ -25,10 +25,10 @@ class ContainerService:
             raise HTTPException(status_code=404, detail="검색 결과가 존재하지 않습니다")
         return containers
 
-    def update_container(self, id:int, updateReq: ContainerCreate):
+    def update_container(self, id:int, request: ContainerUpdate):
         container = self.find_container(id)
-        self.check_name(updateReq.name)
-        self.repository.update(container, updateReq)
+        self.check_name(request.name)
+        self.repository.update(container, request)
 
     def find_container(self, id):
         container = self.repository.find_by_id(id)
