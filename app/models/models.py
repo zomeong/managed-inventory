@@ -1,9 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, BigInteger
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from enum import Enum as PyEnum
-
-Base = declarative_base()
+from app.core.database import Base
 
 class TransactionType(str, PyEnum):
     IN = "입고"
@@ -12,9 +10,9 @@ class TransactionType(str, PyEnum):
 class Product(Base):
     __tablename__ = "product"
     
-    _id = Column(BigInteger, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    code = Column(String, nullable=False)
+    _id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(30), nullable=False)
+    code = Column(String(30), nullable=False)
     
     # 관계 설정
     stock_items = relationship("Stock", back_populates="product")
@@ -22,9 +20,9 @@ class Product(Base):
 class Container(Base):
     __tablename__ = "container"
     
-    _id = Column(BigInteger, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    location = Column(String, nullable=False)
+    _id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(30), nullable=False)
+    location = Column(String(512), nullable=False)
     
     # 관계 설정
     stock_items = relationship("Stock", back_populates="container")
@@ -32,9 +30,9 @@ class Container(Base):
 class Stock(Base):
     __tablename__ = "stock"
     
-    _id = Column(BigInteger, primary_key=True, index=True)
-    product_id = Column(BigInteger, ForeignKey("products._id"), nullable=False)
-    container_id = Column(BigInteger, ForeignKey("containers._id"), nullable=False)
+    _id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
+    product_id = Column(BigInteger, ForeignKey("product._id"), nullable=False)
+    container_id = Column(BigInteger, ForeignKey("container._id"), nullable=False)
     quantity = Column(Integer, nullable=False)
     
     # 관계 설정
@@ -44,10 +42,10 @@ class Stock(Base):
 class Transaction(Base):
     __tablename__ = "transaction"
     
-    _id = Column(BigInteger, primary_key=True, index=True)
+    _id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
     _type = Column(Enum(TransactionType), nullable=False)
-    product_code = Column(String, nullable=False)
-    container_name = Column(String, nullable=False)
+    product_code = Column(String(30), nullable=False)
+    container_name = Column(String(30), nullable=False)
     quantity = Column(Integer, nullable=False)
     date = Column(DateTime, nullable=False)
-    manager_name = Column(String, nullable=True)
+    manager_name = Column(String(30), nullable=True)
