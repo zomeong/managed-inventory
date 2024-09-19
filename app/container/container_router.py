@@ -25,8 +25,8 @@ def get_all_containers(service: ContainerService = Depends(get_container_service
     return service.get_all_containers()
 
 @router.get("/{container_name}/search", response_model=list[ContainerResponse])
-def search_container(container_name: str, service: ContainerService = Depends(get_container_service)):
-    return service.search_container(container_name)
+def search_containers(container_name: str, service: ContainerService = Depends(get_container_service)):
+    return service.search_containers(container_name)
 
 @router.post("/{container_id}/update")
 def update_container(container_id: int, container: ContainerUpdate,

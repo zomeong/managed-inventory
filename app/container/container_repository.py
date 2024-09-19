@@ -31,7 +31,7 @@ class ContainerRepository:
     def search_by_name(self, name: str):
         return self.db.query(Container).filter(
             or_(
-                Container.name == name,  # 정확히 일치
-                Container.name.ilike(f"%{name}%")  # 부분 일치
+                Container.name == name,
+                Container.name.ilike(f"%{name}%")
             )
         ).all()
