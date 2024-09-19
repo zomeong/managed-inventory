@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Depends
 from app.container.container_service import ContainerService
 from app.container.container_schema import ContainerCreate, ContainerUpdate, ContainerResponse
 from sqlalchemy.orm import Session
