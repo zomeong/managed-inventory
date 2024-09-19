@@ -3,3 +3,5 @@ db_data
 dbconf
 __pycache__
 .env
+alembic
+alembic.ini
