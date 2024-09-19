@@ -18,6 +18,13 @@ class ContainerService:
     def get_all_containers(self):
         return self.repository.get_all()
     
+    def search_container(self, name:str):
+        containers = self.repository.search_by_name(name)
+
+        if not containers:
+            raise HTTPException(status_code=404, detail="검색 결과가 존재하지 않습니다")
+        return containers
+
     def update_container(self, id:int, updateReq: ContainerCreate):
         container = self.find_container(id)
         self.check_name(updateReq.name)
@@ -25,8 +32,8 @@ class ContainerService:
 
     def find_container(self, id):
         container = self.repository.find_by_id(id)
-        if container is None:
-            raise ValueError("컨테이너를 찾을 수 없습니다")
+        if not container:
+            raise HTTPException(status_code=404, detail="컨테이너를 찾을 수 없습니다")
         return container
     
     def check_name(self, name):

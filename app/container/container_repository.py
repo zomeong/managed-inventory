@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from app.models.models import Container
 
 class ContainerRepository:
@@ -19,9 +20,17 @@ class ContainerRepository:
 
     def get_all(self):
         return self.db.query(Container).all()
+    
+    def find_by_id(self, id: int):
+        return self.db.query(Container).filter(Container._id == id).first()
 
     def find_by_name(self, name: str):
         return self.db.query(Container).filter(Container.name == name).first()
     
-    def find_by_id(self, id: int):
-        return self.db.query(Container).filter(Container._id == id).first()
+    def search_by_name(self, name: str):
+        return self.db.query(Container).filter(
+            or_(
+                Container.name == name,  # 정확히 일치
+                Container.name.ilike(f"%{name}%")  # 부분 일치
+            )
+        ).all()
