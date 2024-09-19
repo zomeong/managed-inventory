@@ -12,5 +12,9 @@ class TransactionBase(BaseModel):
     container_name: str
     quantity: int
 
-class ResponseTransaction(TransactionBase):
+class TransactionCreate(TransactionBase):
+    pass
+
+class TransactionResponse(TransactionBase):
+    _id: int
     date: datetime

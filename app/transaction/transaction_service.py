@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.transaction.transaction_schema import TransactionBase
+from app.transaction.transaction_schema import TransactionCreate
 from app.transaction.transaction_repository import TransactionRepository
 from app.product.product_repository import ProductRepository
 from app.container.container_repository import ContainerRepository
@@ -11,7 +11,7 @@ class TransactionService:
         self.product_repository = ProductRepository(db)
         self.container_repository = ContainerRepository(db)
 
-    def create_transaction(self, request: TransactionBase):
+    def create_transaction(self, request: TransactionCreate):
         self.check_product(request.product_code)
         self.check_container(request.container_name)
         # todo : 재고 로직
