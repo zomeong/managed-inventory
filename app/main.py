@@ -4,6 +4,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from app.core.database import Base, engine
 from app.models import models
 from app.container import container_router
+from app.product import product_router
 
 def get_server():
     server = FastAPI(
@@ -34,3 +35,4 @@ def ping():
     return 200
 
 app.include_router(container_router.router, tags=['Container'])
+app.include_router(product_router.router, tags=['Product'])
