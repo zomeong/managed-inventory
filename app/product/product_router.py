@@ -24,6 +24,14 @@ def get_product(product_id:int, service: ProductService = Depends(get_product_se
 def get_all_products(service: ProductService = Depends(get_product_service)):
     return service.get_all_products()
     
+@router.get("/search/name/{product_name}", response_model=list[ProductResponse])
+def search_products_by_name(product_name: str, service: ProductService = Depends(get_product_service)):
+    return service.search_products_by_name(product_name)
+    
+@router.get("/search/code/{product_code}", response_model=list[ProductResponse])
+def search_products_by_code(product_code: str, service: ProductService = Depends(get_product_service)):
+    return service.search_products_by_code(product_code)
+
 @router.post("/{product_id}/update")
 def update_product(product_id: int, product: ProductUpdate,
                 service: ProductService = Depends(get_product_service)):

@@ -19,6 +19,12 @@ class ProductService:
     def get_all_products(self):
         return self.repository.get_all()
     
+    def search_products_by_name(self, name: str):
+        return self.repository.search_by_name(name)
+    
+    def search_products_by_code(self, code: str):
+        return self.repository.search_by_code(code)
+
     def update_product(self, id: int, request: ProductUpdate):
         product = self.find_product(id)
         self.check_code(request.code)

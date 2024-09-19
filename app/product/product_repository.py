@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from app.models.models import Product
 
 class ProductRepository:
@@ -29,3 +30,19 @@ class ProductRepository:
 
     def find_by_code(self, code: str):
         return self.db.query(Product).filter(Product.code == code).first()
+    
+    def search_by_name(self, name: str):
+        return self.db.query(Product).filter(
+            or_(
+                Product.name == name,
+                Product.name.ilike(f"%{name}%")
+            )
+        ).all()
+    
+    def search_by_code(self, code: str):
+        return self.db.query(Product).filter(
+            or_(
+                Product.code == code,
+                Product.code.ilike(f"%{code}%")
+            )
+        ).all()
