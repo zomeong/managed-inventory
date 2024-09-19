@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from app.product.product_repository import ProductRepository
-from app.product.product_schema import Product
+from app.product.product_schema import ProductCreate, ProductUpdate
 
 class ProductService:
     def __init__(self, db: Session):
         self.repository = ProductRepository(db)
 
-    def create_product(self, request: Product):
+    def create_product(self, request: ProductCreate):
         self.check_code(request.code)
         self.check_name(request.name)
         self.repository.create(request)
@@ -19,7 +19,7 @@ class ProductService:
     def get_all_products(self):
         return self.repository.get_all()
     
-    def update_product(self, id: int, request: Product):
+    def update_product(self, id: int, request: ProductUpdate):
         product = self.find_product(id)
         self.check_code(request.code)
         self.check_name(request.name)

@@ -25,18 +25,18 @@ class ContainerService:
             raise HTTPException(status_code=404, detail="검색 결과가 존재하지 않습니다")
         return containers
 
-    def update_container(self, id:int, request: ContainerUpdate):
+    def update_container(self, id: int, request: ContainerUpdate):
         container = self.find_container(id)
         self.check_name(request.name)
         self.repository.update(container, request)
 
-    def find_container(self, id):
+    def find_container(self, id: int):
         container = self.repository.find_by_id(id)
         if not container:
             raise HTTPException(status_code=404, detail="컨테이너를 찾을 수 없습니다")
         return container
     
-    def check_name(self, name):
+    def check_name(self, name: str):
         container = self.repository.find_by_name(name)
         if container:
             raise HTTPException(status_code=400, detail="이미 존재하는 창고 이름입니다.")
