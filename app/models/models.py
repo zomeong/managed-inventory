@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, BigI
 from sqlalchemy.orm import relationship
 from enum import Enum as PyEnum
 from app.core.database import Base
+from datetime import datetime
+from pytz import timezone
 
 class TransactionType(str, PyEnum):
     IN = "입고"
@@ -43,9 +45,8 @@ class Transaction(Base):
     __tablename__ = "transaction"
     
     _id = Column(BigInteger, primary_key=True, index=True, autoincrement=True)
-    _type = Column(Enum(TransactionType), nullable=False)
+    type = Column(Enum(TransactionType), nullable=False)
     product_code = Column(String(30), nullable=False)
     container_name = Column(String(30), nullable=False)
     quantity = Column(Integer, nullable=False)
-    date = Column(DateTime, nullable=False)
-    manager_name = Column(String(30), nullable=True)
+    date = Column(DateTime, default=datetime.now().astimezone(timezone('Asia/Seoul')))

@@ -5,6 +5,7 @@ from app.core.database import Base, engine
 from app.models import models
 from app.container import container_router
 from app.product import product_router
+from app.transaction import transaction_router
 
 def get_server():
     server = FastAPI(
@@ -36,3 +37,4 @@ def ping():
 
 app.include_router(container_router.router, tags=['Container'])
 app.include_router(product_router.router, tags=['Product'])
+app.include_router(transaction_router.router, tags=['Transaction'])
