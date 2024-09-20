@@ -38,3 +38,49 @@ class StockService:
     def get_container_stock(self, id: int):
         self.container_service.find_container_by_id(id)
         return self.repository.find_by_container_id(id)
+    
+    def get_all_products_stock(self):
+        stock_data = self.repository.get_all()
+
+        stock_map = {}
+        for stock in stock_data:
+            product_code = stock.product_code
+            container_name = stock.container_name
+            quantity = stock.quantity
+
+            if product_code not in stock_map:
+                stock_map[product_code] = {
+                    "total_stock" : 0,
+                    "stock_data": []
+                }
+            
+            stock_map[product_code]["total_stock"] += quantity
+            stock_map[product_code]["stock_data"].append({
+                "container_name": container_name,
+                "quantity": quantity
+            })
+
+        return stock_map
+
+    def get_all_containers_stock(self):
+        stock_data = self.repository.get_all()
+
+        stock_map = {}
+        for stock in stock_data:
+            product_code = stock.product_code
+            container_name = stock.container_name
+            quantity = stock.quantity
+
+            if container_name not in stock_map:
+                stock_map[container_name] = {
+                    "total_stock" : 0,
+                    "stock_data": []
+                }
+            
+            stock_map[container_name]["total_stock"] += quantity
+            stock_map[container_name]["stock_data"].append({
+                "product_code": product_code,
+                "quantity": quantity
+            })
+
+        return stock_map

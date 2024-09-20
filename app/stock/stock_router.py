@@ -2,14 +2,16 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.stock.stock_service import StockService
-from app.stock.stock_schema import ProductStockResponse, ContainerStockResponse
+from app.stock.stock_schema import ProductStockResponse, ContainerStockResponse, ProductStockListResponse, ContainerStockListResponse, TotalProductStockResponse, TotalContainerStockResponse
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/stock",
+)
 
 def get_stock_service(db:Session = Depends(get_db)):
     return StockService(db)
 
-@router.get("/products/stock/{product_id}", response_model=ProductStockResponse)
+@router.get("/products/{product_id}", response_model=ProductStockResponse)
 def get_product_stock(product_id: int, service: StockService = Depends(get_stock_service)):
     stock_data, total_stock = service.get_product_stock(product_id)
 
@@ -18,10 +20,42 @@ def get_product_stock(product_id: int, service: StockService = Depends(get_stock
         "stock_data" : stock_data
     }
 
-@router.get("/containers/stock/{container_id}", response_model=ContainerStockResponse)
+@router.get("/containers/{container_id}", response_model=ContainerStockResponse)
 def get_container_stock(container_id: int, service: StockService = Depends(get_stock_service)):
     stock_data = service.get_container_stock(container_id)
 
     return {
         "stock_data" : stock_data
     }
+
+@router.get("/products", response_model=list[TotalProductStockResponse])
+def get_all_products_stock(service: StockService = Depends(get_stock_service)):
+    stock_map = service.get_all_products_stock()
+
+    return [
+        TotalProductStockResponse(
+            product_code=product_code,
+            total_stock=stock["total_stock"],
+            stock_data=[
+                ProductStockListResponse(container_name=item["container_name"], quantity=item["quantity"])
+                for item in stock["stock_data"]
+            ]
+        )
+        for product_code, stock in stock_map.items()
+    ]
+
+@router.get("/containers", response_model=list[TotalContainerStockResponse])
+def get_all_containers_stock(service: StockService = Depends(get_stock_service)):
+    stock_map = service.get_all_containers_stock()
+
+    return [
+        TotalContainerStockResponse(
+            container_name=container_name,
+            total_stock=stock["total_stock"],
+            stock_data=[
+                ContainerStockListResponse(product_code=item["product_code"], quantity=item["quantity"])
+                for item in stock["stock_data"]
+            ]
+        )
+        for container_name, stock in stock_map.items()
+    ]

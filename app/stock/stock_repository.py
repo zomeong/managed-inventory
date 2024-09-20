@@ -31,6 +31,19 @@ class StockRepository:
             Product.code.label("product_code"),
             Stock.quantity
         ).join(Product).filter(Stock.container_id == id).all()
+    
+    def get_all(self):
+        return (
+            self.db.query(
+                Product.code.label("product_code"),
+                Container.name.label("container_name"),
+                Stock.quantity
+            )
+            .join(Stock, Stock.product_id == Product._id)
+            .join(Container, Stock.container_id == Container._id)
+            .all()
+        )
 
     def sum_stock(self, id: int):
         return self.db.query(func.sum(Stock.quantity)).filter(Stock.product_id == id).scalar()
+    
