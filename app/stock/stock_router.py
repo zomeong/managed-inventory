@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.stock.stock_service import StockService
-from app.stock.stock_schema import ProductStockResponse, ContainerStockResponse, ProductStockListResponse, ContainerStockListResponse, TotalProductStockResponse, TotalContainerStockResponse
+from app.stock.stock_schema import ProductStockResponse, ProductStockListResponse, ContainerStockListResponse, TotalProductStockResponse, TotalContainerStockResponse
 
 router = APIRouter(
     prefix="/stock",
@@ -15,18 +15,22 @@ def get_stock_service(db:Session = Depends(get_db)):
 def get_product_stock(product_id: int, service: StockService = Depends(get_stock_service)):
     stock_data, total_stock = service.get_product_stock(product_id)
 
-    return {
-        "total_stock" : total_stock,
-        "stock_data" : stock_data
-    }
+    return ProductStockResponse(
+        total_stock=total_stock,
+        stock_data=[
+            ProductStockListResponse(container_name=item[0], quantity=item[1])
+            for item in stock_data
+        ]
+    )
 
-@router.get("/containers/{container_id}", response_model=ContainerStockResponse)
+@router.get("/containers/{container_id}", response_model=list[ContainerStockListResponse])
 def get_container_stock(container_id: int, service: StockService = Depends(get_stock_service)):
     stock_data = service.get_container_stock(container_id)
 
-    return {
-        "stock_data" : stock_data
-    }
+    return [
+            ContainerStockListResponse(product_code=item[0], quantity=item[1])
+            for item in stock_data
+        ]
 
 @router.get("/products", response_model=list[TotalProductStockResponse])
 def get_all_products_stock(service: StockService = Depends(get_stock_service)):
