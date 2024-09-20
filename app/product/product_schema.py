@@ -1,10 +1,16 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class Product(BaseModel):
+class ProductBase(BaseModel):
     name: str
     code: str
 
-class ProductUpdate(BaseModel):
+class ProductCreate(ProductBase):
+    pass
+
+class ProductUpdate(ProductBase):
     name: Optional[str] = None
     code: Optional[str] = None
+
+class ProductResponse(ProductBase):
+    _id: int
