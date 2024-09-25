@@ -16,6 +16,9 @@ def get_container_service(db: Session = Depends(get_db)):
 
 @router.post("")
 def create_container(container: ContainerCreate, service: ContainerService = Depends(get_container_service)):
+    """
+        컨테이너 생성
+    """
     try:
         service.create_container(container)
         return "컨테이너 생성이 완료되었습니다."
