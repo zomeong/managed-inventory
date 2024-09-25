@@ -43,4 +43,4 @@ def search_products_by_code(product_code: str, service: ProductService = Depends
 def update_product(product_id: int, product: ProductUpdate,
                 service: ProductService = Depends(get_product_service)):
     service.update_product(product_id, product)
-    return "컨테이너 정보 수정이 완료되었습니다."
+    return "물품 정보 수정이 완료되었습니다."
