@@ -8,11 +8,14 @@ from app.product import product_router
 from app.transaction import transaction_router
 from app.stock import stock_router
 
+desc = '마크클라우드 사내 재고 관리 시스템'
+
 def get_server():
     server = FastAPI(
         title='markcloud-managed-inventory', 
         docs_url="/docs", redoc_url=None,
         version="1.0.0",
+        description=desc,
         openapi_url="/openapi.json"
     )
     server.add_middleware(

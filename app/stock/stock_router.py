@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.stock.stock_service import StockService
 from app.stock.stock_schema import ProductStockResponse, ProductStockListResponse, ContainerStockListResponse, TotalProductStockResponse, TotalContainerStockResponse
+from app.core.exception_handler import exception_handler
+
 
 router = APIRouter(
     prefix="/stock",
@@ -12,6 +14,7 @@ def get_stock_service(db:Session = Depends(get_db)):
     return StockService(db)
 
 @router.get("/products/{product_id}", response_model=ProductStockResponse)
+@exception_handler
 def get_product_stock(product_id: int, service: StockService = Depends(get_stock_service)):
     stock_data, total_stock = service.get_product_stock(product_id)
 
@@ -24,6 +27,7 @@ def get_product_stock(product_id: int, service: StockService = Depends(get_stock
     )
 
 @router.get("/containers/{container_id}", response_model=list[ContainerStockListResponse])
+@exception_handler
 def get_container_stock(container_id: int, service: StockService = Depends(get_stock_service)):
     stock_data = service.get_container_stock(container_id)
 
@@ -33,6 +37,7 @@ def get_container_stock(container_id: int, service: StockService = Depends(get_s
         ]
 
 @router.get("/products", response_model=list[TotalProductStockResponse])
+@exception_handler
 def get_all_products_stock(service: StockService = Depends(get_stock_service)):
     stock_map = service.get_all_products_stock()
 
@@ -49,6 +54,7 @@ def get_all_products_stock(service: StockService = Depends(get_stock_service)):
     ]
 
 @router.get("/containers", response_model=list[TotalContainerStockResponse])
+@exception_handler
 def get_all_containers_stock(service: StockService = Depends(get_stock_service)):
     stock_map = service.get_all_containers_stock()
 
