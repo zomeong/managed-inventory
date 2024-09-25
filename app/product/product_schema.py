@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 class ProductBase(BaseModel):
     name: str
-    code: str
+    code: str = Field(max_length = 10)
 
 class ProductCreate(ProductBase):
     pass

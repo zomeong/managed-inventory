@@ -13,8 +13,7 @@ class ProductService:
         self.repository.create(request)
 
     def get_product(self, id:int):
-        product = self.find_product_by_id(id)
-        return product
+        return self.find_product_by_id(id)
     
     def get_all_products(self):
         return self.repository.get_all()

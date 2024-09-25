@@ -8,7 +8,7 @@ def exception_handler(func):
     @wraps(func)  # wraps로 원래 함수의 메타데이터를 유지
     async def wrapper(*args, **kwargs):
         try:
-            return await func(*args, **kwargs)
+            return func(*args, **kwargs)
         
         # 발생한 HTTPException 클라이언트에 전달
         except HTTPException as he:
