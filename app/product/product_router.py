@@ -38,7 +38,7 @@ def get_all_products(service: ProductService = Depends(get_product_service)):
 @router.post("/{product_code}/update",
     description="""
     물픔 정보 수정 API<br>
-    * name / code 중 하나만 입력하여 수정 가능
+    * name / code 중 하나 혹은 모두 입력하여 수정 가능
 
     Parameter
     - product_code: 물품 코드
@@ -48,7 +48,7 @@ def get_all_products(service: ProductService = Depends(get_product_service)):
     - code: 물품 코드
     """)
 @exception_handler
-def update_product(product_code: int, product: ProductUpdate,
+def update_product(product_code: str, product: ProductUpdate,
                 service: ProductService = Depends(get_product_service)):
     service.update_product(product_code, product)
     return "물품 정보 수정이 완료되었습니다."

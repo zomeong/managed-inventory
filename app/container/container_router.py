@@ -40,7 +40,7 @@ def get_all_containers(service: ContainerService = Depends(get_container_service
 @router.post("/{container_name}/update",
     description="""
     창고 정보 수정 API<br>
-    * name / location 중 하나만 입력하여 수정 가능
+    * name / location 중 하나 혹은 모두 입력하여 수정 가능
 
     Parameter
     - container_name: 창고 이름
@@ -50,7 +50,7 @@ def get_all_containers(service: ContainerService = Depends(get_container_service
     - location: 창고 위치
     """)
 @exception_handler
-def update_container(container_name: int, container: ContainerUpdate,
+def update_container(container_name: str, container: ContainerUpdate,
                     service: ContainerService = Depends(get_container_service)):
     service.update_container(container_name, container)
     return "컨테이너 정보 수정이 완료되었습니다."
