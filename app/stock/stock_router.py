@@ -13,10 +13,10 @@ router = APIRouter(
 def get_stock_service(db:Session = Depends(get_db)):
     return StockService(db)
 
-@router.get("/products/{product_id}", response_model=ProductStockResponse)
+@router.get("/products/{product_code}", response_model=ProductStockResponse)
 @exception_handler
-def get_product_stock(product_id: int, service: StockService = Depends(get_stock_service)):
-    stock_data, total_stock = service.get_product_stock(product_id)
+def get_product_stock(product_code: str, service: StockService = Depends(get_stock_service)):
+    stock_data, total_stock = service.get_product_stock(product_code)
 
     return ProductStockResponse(
         total_stock=total_stock,
@@ -26,10 +26,10 @@ def get_product_stock(product_id: int, service: StockService = Depends(get_stock
         ]
     )
 
-@router.get("/containers/{container_id}", response_model=list[ContainerStockListResponse])
+@router.get("/containers/{container_name}", response_model=list[ContainerStockListResponse])
 @exception_handler
-def get_container_stock(container_id: int, service: StockService = Depends(get_stock_service)):
-    stock_data = service.get_container_stock(container_id)
+def get_container_stock(container_name: str, service: StockService = Depends(get_stock_service)):
+    stock_data = service.get_container_stock(container_name)
 
     return [
             ContainerStockListResponse(product_code=item[0], quantity=item[1])

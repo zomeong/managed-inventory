@@ -12,8 +12,8 @@ class ProductService:
         self.check_name(request.name)
         self.repository.create(request)
 
-    def get_product(self, id:int):
-        return self.find_product_by_id(id)
+    def get_product(self, code:str):
+        return self.find_product_by_code(code)
     
     def get_all_products(self):
         return self.repository.get_all()
@@ -24,17 +24,11 @@ class ProductService:
     def search_products_by_code(self, code: str):
         return self.repository.search_by_code(code)
 
-    def update_product(self, id: int, request: ProductUpdate):
-        product = self.find_product_by_id(id)
+    def update_product(self, code: str, request: ProductUpdate):
+        product = self.find_product_by_code(code)
         self.check_code(request.code)
         self.check_name(request.name)
         self.repository.update(product, request)
-
-    def find_product_by_id(self, id:int):
-        product = self.repository.find_by_id(id)
-        if product is None:
-            raise HTTPException(status_code=404, detail="물품을 찾을 수 없습니다")
-        return product
     
     def find_product_by_code(self, code: str):
         product = self.repository.find_by_code(code)
