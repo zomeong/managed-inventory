@@ -16,5 +16,5 @@ class TransactionCreate(TransactionBase):
     pass
 
 class TransactionResponse(TransactionBase):
-    _id: int
     date: datetime
+    id: int = Field(alias="_id")
