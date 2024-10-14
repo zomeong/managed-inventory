@@ -36,11 +36,6 @@ def get_container(container_name: str, service: ContainerService = Depends(get_c
 @exception_handler
 def get_all_containers(service: ContainerService = Depends(get_container_service)):
     return service.get_all_containers()
-    
-# @router.get("/{container_name}/search", response_model=list[ContainerResponse])
-# @exception_handler
-# def search_containers(container_name: str, service: ContainerService = Depends(get_container_service)):
-#     return service.search_containers(container_name)
 
 @router.post("/{container_name}/update",
     description="""
@@ -59,3 +54,8 @@ def update_container(container_name: int, container: ContainerUpdate,
                     service: ContainerService = Depends(get_container_service)):
     service.update_container(container_name, container)
     return "컨테이너 정보 수정이 완료되었습니다."
+    
+# @router.get("/{container_name}/search", response_model=list[ContainerResponse])
+# @exception_handler
+# def search_containers(container_name: str, service: ContainerService = Depends(get_container_service)):
+#     return service.search_containers(container_name)
