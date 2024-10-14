@@ -28,16 +28,16 @@ class StockService:
             else:
                 raise HTTPException(status_code=400, detail="출고 수량이 재고 수량보다 많습니다.")
         
-    def get_product_stock(self, id: int):
-        self.product_service.find_product_by_id(id)
-        stock_data = self.repository.find_by_product_id(id)
-        total_stock = self.repository.sum_stock(id)
+    def get_product_stock(self, code: str):
+        product = self.product_service.find_product_by_code(code)
+        stock_data = self.repository.find_by_product_id(product._id)
+        total_stock = self.repository.sum_stock(product._id)
 
         return stock_data, total_stock
     
-    def get_container_stock(self, id: int):
-        self.container_service.find_container_by_id(id)
-        return self.repository.find_by_container_id(id)
+    def get_container_stock(self, name: str):
+        container = self.container_service.find_container_by_name(name)
+        return self.repository.find_by_container_id(container._id)
     
     def get_all_products_stock(self):
         stock_data = self.repository.get_all()
