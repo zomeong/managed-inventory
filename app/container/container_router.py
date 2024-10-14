@@ -21,10 +21,10 @@ def create_container(container: ContainerCreate, service: ContainerService = Dep
     service.create_container(container)
     return "컨테이너 생성이 완료되었습니다."
 
-@router.get("/{container_id}", response_model=ContainerResponse)
+@router.get("/{container_name}", response_model=ContainerResponse)
 @exception_handler
-def get_container(container_id: int, service: ContainerService = Depends(get_container_service)):
-    return service.get_container(container_id)
+def get_container(container_name: str, service: ContainerService = Depends(get_container_service)):
+    return service.get_container(container_name)
 
 @router.get("", response_model=list[ContainerResponse])
 @exception_handler
@@ -36,9 +36,9 @@ def get_all_containers(service: ContainerService = Depends(get_container_service
 def search_containers(container_name: str, service: ContainerService = Depends(get_container_service)):
     return service.search_containers(container_name)
 
-@router.post("/{container_id}/update")
+@router.post("/{container_name}/update")
 @exception_handler
-def update_container(container_id: int, container: ContainerUpdate,
+def update_container(container_name: int, container: ContainerUpdate,
                     service: ContainerService = Depends(get_container_service)):
-    service.update_container(container_id, container)
+    service.update_container(container_name, container)
     return "컨테이너 정보 수정이 완료되었습니다."

@@ -11,8 +11,8 @@ class ContainerService:
         self.check_name(request.name)
         self.repository.create(request)
 
-    def get_container(self, id: int):
-        container = self.find_container_by_id(id)
+    def get_container(self, name: str):
+        container = self.find_container_by_name(name)
         return container
 
     def get_all_containers(self):
@@ -21,16 +21,10 @@ class ContainerService:
     def search_containers(self, name:str):
         return self.repository.search_by_name(name)
 
-    def update_container(self, id: int, request: ContainerUpdate):
-        container = self.find_container_by_id(id)
+    def update_container(self, name: str, request: ContainerUpdate):
+        container = self.find_container_by_name(name)
         self.check_name(request.name)
         self.repository.update(container, request)
-
-    def find_container_by_id(self, id: int):
-        container = self.repository.find_by_id(id)
-        if container is None:
-            raise HTTPException(status_code=404, detail="창고를 찾을 수 없습니다")
-        return container
     
     def find_container_by_name(self, name: str):
         container = self.repository.find_by_name(name)
