@@ -31,13 +31,19 @@ class StockService:
     def get_product_stock(self, code: str):
         product = self.product_service.find_product_by_code(code)
         stock_data = self.repository.find_by_product_id(product._id)
+        if len(stock_data) == 0:
+            raise HTTPException(status_code=400, detail="재고가 존재하지 않습니다.")
         total_stock = self.repository.sum_stock(product._id)
 
         return stock_data, total_stock
     
     def get_container_stock(self, name: str):
         container = self.container_service.find_container_by_name(name)
-        return self.repository.find_by_container_id(container._id)
+        stock_data = self.repository.find_by_container_id(container._id)
+        if len(stock_data) == 0:
+            raise HTTPException(status_code=400, detail="재고가 존재하지 않습니다.")
+        
+        return stock_data
     
     def get_all_products_stock(self):
         stock_data = self.repository.get_all()
