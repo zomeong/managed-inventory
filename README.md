@@ -1,11 +1,11 @@
-# MARKCLOUD MANAGED-INVENTORY
+# MANAGED-INVENTORY
 
 > Initial written at Nov 20, 2024 <br>
 
 ## 1. 프로그램 설명
 
 - 본 프로그램은 ubuntu OS 기준으로 작성되었습니다.
-- 본 프로그램은 마크 클라우드 그룹웨어 - 재고 관리 시스템의 백엔드 서버입니다.
+- 본 프로그램은 재고 관리 시스템의 백엔드 서버입니다.
 
 ## 2. Prerequestie
 
