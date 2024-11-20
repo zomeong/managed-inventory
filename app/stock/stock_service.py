@@ -26,7 +26,7 @@ class StockService:
             if stock and stock.quantity >= request.quantity:
                 self.repository.update(stock, -request.quantity)
             else:
-                raise HTTPException(status_code=400, detail="출고 수량이 재고 수량보다 많습니다.")
+                raise HTTPException(status_code=423, detail="출고 수량이 재고 수량보다 많습니다.")
         
     def get_product_stock(self, code: str):
         product = self.product_service.find_product_by_code(code)
