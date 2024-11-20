@@ -3,7 +3,7 @@ from typing import Optional
 
 class ProductBase(BaseModel):
     name: str
-    code: str = Field(max_length = 10)
+    code: str
 
 class ProductCreate(ProductBase):
     pass
